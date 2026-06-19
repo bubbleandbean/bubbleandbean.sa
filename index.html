@@ -381,6 +381,12 @@
     </section>
   </main>
 
+  <footer class="site">
+  <button class="owner-link" id="openOwnerBtn" style="display:none;">
+    Business owner? Manage menu &amp; orders
+  </button>
+</footer>
+  
   <div class="mobile-cart-bar" id="mobileCartBar">
     <span id="mobileCartSummary">0 items · R0.00</span>
     <button id="mobileCartBtn">View order</button>
@@ -1535,6 +1541,14 @@ const DRINK_IMAGES = {
 
   init();
 })();
+</script>
+  <script>
+  if (window.location.hash === "#owner") {
+    window.addEventListener("load", function () {
+      const btn = document.getElementById("openOwnerBtn");
+      if (btn) btn.click();
+    });
+  }
 </script>
 </body>
 </html>
