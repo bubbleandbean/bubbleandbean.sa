@@ -1544,10 +1544,13 @@ const DRINK_IMAGES = {
 </script>
 <script>
   window.addEventListener("load", function () {
-    if (window.location.hash === "#owner") {
-      const ownerOverlay = document.getElementById("ownerOverlay");
-      if (ownerOverlay) {
-        ownerOverlay.classList.add("show");
+    const url = new URL(window.location.href);
+
+    if (url.searchParams.get("owner") === "1") {
+      const popup = document.getElementById("ownerOverlay");
+      if (popup) {
+        popup.style.display = "flex";
+        popup.classList.add("show");
       }
     }
   });
