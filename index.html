@@ -923,7 +923,13 @@ const DRINK_IMAGES = {
   /* ---------------- cart ---------------- */
   function addToCart(item){
     const sel = getSelection(item);
-    const price = item.prices[sel.size];
+let price = item.prices[sel.size];
+
+const baseChoice = sel.opts && sel.opts.Base;
+if(item.category === "Boba" && baseChoice === "Redbull"){
+  if(sel.size === "Medium") price = 65;
+  if(sel.size === "Large") price = 75;
+}
     if(price===null || price===undefined || price==="") return;
     const optParts = [];
     if(itemHasSizes(item)) {/* size shown separately */}
