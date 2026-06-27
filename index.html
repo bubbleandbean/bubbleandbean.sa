@@ -1221,23 +1221,40 @@ const DRINK_IMAGES = {
   function closeOwnerGate(){ document.getElementById("ownerOverlay").classList.remove("show"); }
 
   async function tryUnlockOwner(){
-    const email = document.getElementById("ownerEmailInput").value.trim();
-    const password = document.getElementById("ownerPasscodeInput").value;
-    const err = document.getElementById("ownerPasscodeError");
-    err.textContent = "";
-    if(!email || !password){ err.textContent = "Enter your admin email and password."; return; }
-    try{
-      await auth.signInWithEmailAndPassword(email, password);
-      ownerUnlocked = true; closeOwnerGate();
-      document.getElementById("customerPage").style.display="none";
-      document.getElementById("ownerPage").classList.add("show");
-      ownerActiveDate = selectedDate || todayStr();
-      renderOwnerDateRow(); renderOwnerOrders(); renderOwnerEvents(); renderMenuEditor(); fillSettingsForm();
-    }catch(e){
-      console.error(e);
-      err.textContent = "Login failed. Check the email and password you created in Firebase.";
-    }
+  const email = document.getElementById("ownerEmailInput").value.trim();
+  const password = document.getElementById("ownerPasscodeInput").value;
+  const err = document.getElementById("ownerPasscodeError");
+  err.textContent = "";
+
+  if(!email || !password){
+    err.textContent = "Enter your admin email and password.";
+    return;
   }
+
+  try{
+    await auth.signInWithEmailAndPassword(email, password);
+
+    ownerUnlocked = true;
+
+    document.getElementById("ownerOverlay").classList.remove("show");
+    document.getElementById("ownerOverlay").style.display = "none";
+
+    document.getElementById("customerPage").style.display = "none";
+    document.getElementById("ownerPage").classList.add("show");
+
+    ownerActiveDate = selectedDate || todayStr();
+
+    renderOwnerDateRow();
+    renderOwnerOrders();
+    renderOwnerEvents();
+    renderMenuEditor();
+    fillSettingsForm();
+
+  }catch(e){
+    console.error(e);
+    err.textContent = "Login failed. Check the email and password you created in Firebase.";
+  }
+}
 
   function exitOwner(){
     auth.signOut().catch(()=>{});
