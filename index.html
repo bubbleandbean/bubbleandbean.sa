@@ -1203,12 +1203,21 @@ const DRINK_IMAGES = {
 
   /* ---------------- owner dashboard ---------------- */
   function openOwnerGate(){
-    document.getElementById("ownerOverlay").classList.add("show");
-    document.getElementById("ownerEmailInput").value = auth.currentUser ? auth.currentUser.email : "";
-    document.getElementById("ownerPasscodeInput").value = "";
-    document.getElementById("ownerPasscodeError").textContent = "";
-    document.getElementById("ownerEmailInput").focus();
+  if(auth.currentUser || ownerUnlocked){
+    document.getElementById("ownerOverlay").classList.remove("show");
+    document.getElementById("customerPage").style.display="none";
+    document.getElementById("ownerPage").classList.add("show");
+    ownerActiveDate = selectedDate || todayStr();
+    renderOwnerDateRow(); renderOwnerOrders(); renderOwnerEvents(); renderMenuEditor(); fillSettingsForm();
+    return;
   }
+
+  document.getElementById("ownerOverlay").classList.add("show");
+  document.getElementById("ownerEmailInput").value = auth.currentUser ? auth.currentUser.email : "";
+  document.getElementById("ownerPasscodeInput").value = "";
+  document.getElementById("ownerPasscodeError").textContent = "";
+  document.getElementById("ownerEmailInput").focus();
+}
   function closeOwnerGate(){ document.getElementById("ownerOverlay").classList.remove("show"); }
 
   async function tryUnlockOwner(){
