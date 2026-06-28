@@ -1572,7 +1572,22 @@ if(item.category === "Boba" && baseChoice === "Redbull"){
     window.addEventListener("resize", renderCart);
   }
 
-  init();
+init().catch(err=>{
+  console.error(err);
+  settings = DEFAULT_SETTINGS;
+  menu = DEFAULT_MENU;
+  applyDrinkImages();
+  selectedDate = todayStr();
+  ownerActiveDate = todayStr();
+  applyBranding();
+  renderTabs();
+  renderMenu();
+  renderDateRow();
+  renderSlots();
+  renderCart();
+  renderPayBox();
+  bindEvents();
+});
 })();
 </script>
 <script>
