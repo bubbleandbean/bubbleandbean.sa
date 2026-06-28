@@ -757,35 +757,28 @@ const DRINK_IMAGES = {
 
   /* ---------------- init ---------------- */
   async function init(){
-    let s = await sGet(STORAGE_KEYS.settings);
-    if(!s){ s = DEFAULT_SETTINGS; await sSet(STORAGE_KEYS.settings, s); }
-    settings = Object.assign({}, DEFAULT_SETTINGS, s);
+  settings = DEFAULT_SETTINGS;
+  menu = DEFAULT_MENU;
+  orders = [];
+  eventRequests = [];
 
-    let m = await sGet(STORAGE_KEYS.menu);
-    if(!m){ m = DEFAULT_MENU; await sSet(STORAGE_KEYS.menu, m); }
-    menu = m;
-    const tiramisu = menu.find(i=>i && i.id==="ic3");
-    if(tiramisu){ tiramisu.options = [{ label:"Base", choices:["Coffee","Matcha"] }]; }
-    applyDrinkImages();
+  const tiramisu = menu.find(i=>i && i.id==="ic3");
+  if(tiramisu){ tiramisu.options = [{ label:"Base", choices:["Coffee","Matcha"] }]; }
 
-    let o = await sGet(STORAGE_KEYS.orders);
-    orders = o || [];
+  applyDrinkImages();
 
-    let er = await sGet(STORAGE_KEYS.eventRequests);
-    eventRequests = er || [];
+  selectedDate = todayStr();
+  ownerActiveDate = todayStr();
 
-    selectedDate = todayStr();
-    ownerActiveDate = todayStr();
-
-    applyBranding();
-    renderTabs();
-    renderMenu();
-    renderDateRow();
-    renderSlots();
-    renderCart();
-    renderPayBox();
-    bindEvents();
-  }
+  applyBranding();
+  renderTabs();
+  renderMenu();
+  renderDateRow();
+  renderSlots();
+  renderCart();
+  renderPayBox();
+  bindEvents();
+}
 
   function applyBranding(){
     document.title = settings.businessName + " — Order Online";
