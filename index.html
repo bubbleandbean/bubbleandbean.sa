@@ -788,16 +788,43 @@ const DRINK_IMAGES = {
   }
 
   /* ---------------- init ---------------- */
-  async function init(){
-  settings = DEFAULT_SETTINGS;
-  menu = DEFAULT_MENU;
-  orders = [];
-  eventRequests = [];
+async function init(){
+  try{
+    let s = await sGet(STORAGE_KEYS.settings);
+    if(!s){
+      s = DEFAULT_SETTINGS;
+      await sSet(STORAGE_KEYS.settings, s);
+    }
+    settings = Object.assign({}, DEFAULT_SETTINGS, s);
 
-  const tiramisu = menu.find(i=>i && i.id==="ic3");
-  if(tiramisu){ tiramisu.options = [{ label:"Base", choices:["Coffee","Matcha"] }]; }
+    let m = await sGet(STORAGE_KEYS.menu);
+    if(!m){
+      m = DEFAULT_MENU;
+      await sSet(STORAGE_KEYS.menu, m);
+    }
+    menu = m;
 
-  applyDrinkImages();
+    const tiramisu = menu.find(i=>i && i.id==="ic3");
+    if(tiramisu){
+      tiramisu.options = [{ label:"Base", choices:["Coffee","Matcha"] }];
+    }
+
+    applyDrinkImages();
+
+    let o = await sGet(STORAGE_KEYS.orders);
+    orders = o || [];
+
+    let er = await sGet(STORAGE_KEYS.eventRequests);
+    eventRequests = er || [];
+
+  }catch(e){
+    console.error("Firebase load failed, using backup menu", e);
+    settings = DEFAULT_SETTINGS;
+    menu = DEFAULT_MENU;
+    orders = [];
+    eventRequests = [];
+    applyDrinkImages();
+  }
 
   selectedDate = todayStr();
   ownerActiveDate = todayStr();
@@ -811,7 +838,6 @@ const DRINK_IMAGES = {
   renderPayBox();
   bindEvents();
 }
-
   function applyBranding(){
     document.title = settings.businessName + " — Order Online";
     document.getElementById("brandTagline").textContent = settings.tagline;
