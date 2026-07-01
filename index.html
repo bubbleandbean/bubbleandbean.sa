@@ -62,7 +62,13 @@
   @media (max-width: 880px){ .layout{ grid-template-columns: 1fr; } }
 
   /* ---------- tabs ---------- */
-  .tabs{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom: 18px; }
+  ..tabs{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:12px;
+    margin-bottom:18px;
+}
   .tab-btn{
     background: var(--surface); border: 1px solid var(--line); color: var(--ink-soft);
     padding: 7px 15px; border-radius: 999px; font-size: 0.85rem; font-weight: 600; transition: all .15s ease;
