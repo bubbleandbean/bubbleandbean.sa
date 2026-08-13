@@ -1295,7 +1295,21 @@ if(item.category === "Boba" && baseChoice === "Redbull"){
     };
     orders.push(order);
     await sSet(STORAGE_KEYS.orders, orders);
-
+try {
+  await fetch("https://bubbleandbean-orders.bubbleandbeaninfo.workers.dev/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      action: "send",
+      title: "🔔 New Bubble & Bean Order",
+      message: `New order ${order.ref || order.id} from ${order.name}. Total: ${money(order.total)}.`
+    })
+  });
+} catch (error) {
+  console.error("Notification error:", error);
+}
     showConfirmation(order);
     btn.disabled = false; btn.textContent = originalLabel;
   }
